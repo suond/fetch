@@ -128,3 +128,36 @@ func TestCalcTotalPointsWithMMReceipt(t *testing.T) {
 		t.Errorf("got %q, wanted %q", pts, expected)
 	}
 }
+
+func TestCalcTotalPointsWithMMModifiedReceipt(t *testing.T) {
+	data := []byte(`
+{
+  "retailer": "M&M Corner Market",
+  "purchaseDate": "2022-03-20",
+  "purchaseTime": "14:33",
+  "items": [
+    {
+      "shortDescription": "Gatorade",
+      "price": "2.25"
+    },{
+      "shortDescription": "Gatorade",
+      "price": "2.25"
+    },{
+      "shortDescription": "Gatorade9",
+      "price": "2.25"
+    }
+  ],
+  "total": "9.00"
+}
+`)
+
+	var parsedData Receipt
+
+	json.Unmarshal(data, &parsedData)
+	pts := calcTotalPoints(parsedData)
+	expected := 105
+
+	if pts != expected {
+		t.Errorf("got %q, wanted %q", pts, expected)
+	}
+}
